@@ -49,6 +49,8 @@ It does not primarily describe:
 
 Instead, we care about the growth behavior of the algorithm.
 
+![Growth Rates of Common Time Complexities](./assets/time-complexity.jpeg)
+
 We usually write:
 `T(n)`
 
