@@ -1,5 +1,43 @@
 # Time Complexity & Asymptotic Analysis
 
+A comprehensive reference covering the mathematical foundations, asymptotic notations ($O$, $\Omega$, $\Theta$), practical code analysis rules, and complexity derivation techniques.
+
+---
+
+## 📑 Table of Contents
+
+### Part I: Core Fundamentals & Notations
+1. [What Is Time Complexity?](#1-what-is-time-complexity) — Definition of growth behavior, input size ($n$), and $T(n)$.
+2. [Why Do We Ignore Constants?](#2-why-do-we-ignore-constants) — Understanding dominant terms and asymptotic scaling.
+3. [The Three Main Asymptotic Notations](#3-the-three-main-asymptotic-notations) — High-level overview of $O$, $\Omega$, and $\Theta$.
+4. [Big-O — Upper Bound](#4-big-o--upper-bound) — Asymptotic ceiling, tightest upper bound, and age analogy.
+5. [Big-Omega — Lower Bound](#5-big-omega--lower-bound) — Asymptotic floor and minimum growth guarantees.
+6. [Big-Theta — Tight Bound](#6-big-theta--tight-bound) — Tight sandwich bounds ($O + \Omega$).
+7. [Big-O, Big-Omega, and Big-Theta Together](#7-big-o-big-omega-and-big-theta-together) — Comparing all three bounds on a single function.
+8. [Tightness Matters](#8-tightness-matters) — The informativeness hierarchy of asymptotic bounds.
+
+### Part II: Cases vs Notations & Growth Rates
+9. [Best Case, Average Case, Worst Case](#9-best-case-average-case-worst-case) — Input scenario analysis using Linear Search.
+10. [A Very Important Distinction](#10-a-very-important-distinction) — Why Big-O is not mathematically synonymous with worst-case.
+11. [Complexity Is About Growth, Not Seconds](#11-complexity-is-about-growth-not-seconds) — Growth rates vs real-world wall-clock execution time.
+12. [Common Growth Rates](#12-common-growth-rates) — Standard complexity hierarchy ($O(1)$ to $O(n!)$).
+
+### Part III: Practical Code Analysis
+13. [Reading Code and Finding Complexity](#13-reading-code-and-finding-complexity) — Single, sequential, and nested loops.
+14. [Logarithmic Complexity](#14-logarithmic-complexity) — Repeated halving/doubling patterns and binary search.
+15. [Sequential vs Nested Loops](#15-sequential-vs-nested-loops) — Addition vs multiplication rules.
+16. [Constants and Lower-Order Terms](#16-constants-and-lower-order-terms) — Rules for simplifying algebraic runtime expressions.
+17. [A Practical Complexity Analysis Process](#17-a-practical-complexity-analysis-process) — Step-by-step 5-step framework to analyze any algorithm.
+18. [A Better Mental Model](#18-a-better-mental-model) — Intuitive framework for asymptotic thinking.
+19. [Example: Printing an Array](#19-example-printing-an-array) — Complete walkthrough from code to $\Theta(n)$.
+
+### Part IV: Summary & Self-Assessment
+20. [The Key Rules to Memorize](#20-the-key-rules-to-memorize) — 14 essential complexity rules.
+21. [Quick Self-Test](#21-quick-self-test) — 7 practice conceptual and code questions with answers.
+22. [Final Mental Picture](#22-final-mental-picture) — End-to-end visual summary diagram.
+
+---
+
 ## 1. What Is Time Complexity?
 
 Time complexity describes how the amount of work performed by an algorithm grows as the input size grows.
