@@ -69,8 +69,8 @@ A custom object-oriented implementation of a **Dynamic Array (Array Abstract Dat
   5. Passed by `const Array&` reference to prevent accidental shallow copies and double-free issues upon scope exit.
 * **Complexity**: $\mathcal{O}(n + m)$ time, $\mathcal{O}(n + m)$ space, where $n = \text{length}_1$ and $m = \text{length}_2$.
 
----
+## 📚 Documentation & Complexity Notes
 
-## 💻 Source Code
+* Detailed Complexity Audit & Explanations: **[notes.md](notes.md)**
+* Full C++ Source Implementation: **[Array.cpp](Array.cpp)**
 
-Check the full C++ source file: **[Array.cpp](Array.cpp)**

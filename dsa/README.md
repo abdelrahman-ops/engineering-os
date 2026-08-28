@@ -20,7 +20,7 @@ Every problem includes:
 
 | Data Structure | Operations / Highlights | Implementation | Documentation | Status |
 | :--- | :--- | :---: | :---: | :---: |
-| **Dynamic Array (Array ADT)** | `Fill`, `Display`, `Search`, `Append`, `Insert`, `Delete`, `Enlarge`, `Merge` | [Array.cpp](arrays/array/Array.cpp) | [README.md](arrays/array/README.md) | ✅ Complete |
+| **Dynamic Array (Array ADT)** | `Fill`, `Display`, `Search`, `Append`, `Insert`, `Delete`, `Enlarge`, `Merge` | [Array.cpp](arrays/array/Array.cpp) | [README.md](arrays/array/README.md) • [notes.md](arrays/array/notes.md) | ✅ Complete |
 
 ---
 

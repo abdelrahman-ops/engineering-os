@@ -124,20 +124,23 @@ public:
 
     void Merge(const Array& other) {
         int newSize = size + other.getSize();
-        int* newItems = new int[newSize];
+        int* old = items;
 
-        for (int i = 0; i < length; i++) {
-            newItems[i] = items[i];
+        items = new int[newSize];
+
+        int i;
+        for (i = 0; i < length; i++) {
+            items[i] = old[i];
         }
+        delete[] old;
+
+        int j = i;
 
         for (int i = 0; i < other.getLength(); i++) {
-            newItems[length + i] = other.items[i];
+            items[j++] = other.items[i];
+            length++;
         }
-
-        delete[] items;
-        items = newItems;
         size = newSize;
-        length += other.getLength();
     }
 };
 
