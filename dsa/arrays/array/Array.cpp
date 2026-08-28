@@ -142,6 +142,58 @@ public:
         }
         size = newSize;
     }
+
+    int Max(){
+        if(length == 0){
+            cout << "Error: Array is empty, cannot find maximum element!" << endl;
+            return -1;
+        }
+        int max = items[0];
+        for (int i = 1; i < length; i++)
+        {
+            if (items[i] > max)
+            {
+                max = items[i];
+            }
+        }
+        return max;
+    }
+
+    int Min(){
+        if(length == 0){
+            cout << "Error: Array is empty, cannot find minimum element!" << endl;
+            return -1;
+        }
+        int min = items[0];
+        for (int i = 1; i < length; i++)
+        {
+            if (items[i] <= min)
+            {
+                min = items[i];
+            }
+        }
+        return min;
+    }
+
+    int Sum(){
+        int sum = 0;
+        for (int i = 0; i < length; i++)
+        {
+            sum += items[i];
+        }
+        return sum;
+    }
+
+    void Reverse(){
+        int* newArr = new int[size];
+        for (int i = 0; i < length; i++)
+        {
+            newArr[i] = items[length - 1 - i];
+        }
+        delete[] items;
+        items = newArr;
+    }
+
 };
 
 int main(int argc, const char** argv) {
@@ -215,6 +267,25 @@ int main(int argc, const char** argv) {
     my_array.Merge(other);
 
     cout << "Array Size = " << my_array.getSize() << " | Length = " << my_array.getLength() << endl;
+    my_array.Display();
+
+
+
+    cout << "========================================================" << endl;
+    cout << "Max element: " << endl;
+    cout << my_array.Max() << endl;
+
+    cout << "========================================================" << endl;
+    cout << "Min element: " << endl;
+    cout << my_array.Min() << endl;
+
+    cout << "========================================================" << endl;
+    cout << "Sum of all elements: " << endl;
+    cout << my_array.Sum() << endl;
+
+    cout << "========================================================" << endl;
+    cout << "Reversed array: " << endl;
+    my_array.Reverse();
     my_array.Display();
 
     return 0;

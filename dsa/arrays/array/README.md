@@ -17,6 +17,10 @@ A custom object-oriented implementation of a **Dynamic Array (Array Abstract Dat
 | **Delete** | `void Delete(int index)` | Removes element at `index` and shifts elements left | $O(n)$ | $O(1)$ |
 | **Enlarge** | `void Enlarge(int newSize)` | Allocates larger memory, copies elements, frees old buffer | $O(n)$ | $O(n)$ |
 | **Merge** | `void Merge(const Array& other)` | Combines calling array with `other` into a new allocated buffer | $O(n + m)$ | $O(n + m)$ |
+| **Max** | `int Max()` | Finds the maximum value in the array | $O(n)$ | $O(1)$ |
+| **Min** | `int Min()` | Finds the minimum value in the array | $O(n)$ | $O(1)$ |
+| **Sum** | `int Sum()` | Computes the sum of all elements | $O(n)$ | $O(1)$ |
+| **Reverse** | `void Reverse()` | Reverses the elements order in the array | $O(n)$ | $O(n)$ |
 | **Destructor** | `~Array()` | Deallocates heap memory via `delete[]` to prevent memory leaks | $O(1)$ | $O(1)$ |
 
 ---
@@ -69,8 +73,17 @@ A custom object-oriented implementation of a **Dynamic Array (Array Abstract Dat
   5. Passed by `const Array&` reference to prevent accidental shallow copies and double-free issues upon scope exit.
 * **Complexity**: $\mathcal{O}(n + m)$ time, $\mathcal{O}(n + m)$ space, where $n = \text{length}_1$ and $m = \text{length}_2$.
 
+### 6. `Max()`, `Min()`, and `Sum()`
+* **`Max()` & `Min()`**: Guard against empty arrays (`length == 0`), initialize with `items[0]`, and scan $1 \dots \text{length}-1$. $\mathcal{O}(n)$ time, $\mathcal{O}(1)$ space.
+* **`Sum()`**: Iterates through all elements accumulating sum. $\mathcal{O}(n)$ time, $\mathcal{O}(1)$ space.
+
+### 7. `Reverse()`
+* **Logic**: Allocates `newArr`, copies elements from end to start (`newArr[i] = items[length - 1 - i]`), deletes old buffer, and assigns `items = newArr`.
+* **Complexity**: $\mathcal{O}(n)$ time, $\mathcal{O}(n)$ auxiliary space.
+
+---
+
 ## 📚 Documentation & Complexity Notes
 
 * Detailed Complexity Audit & Explanations: **[notes.md](notes.md)**
 * Full C++ Source Implementation: **[Array.cpp](Array.cpp)**
-

@@ -16,6 +16,10 @@ Comprehensive notes, conceptual audits, and detailed Big-$O$ complexity derivati
 | **`Delete()`** | $\mathcal{O}(1)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Best case deletes last element (`index = length - 1`); worst case deletes `0` (shifts $N - 1$ elements) |
 | **`Enlarge()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(\text{newSize})$ | Allocates a new heap array of `newSize` and copies existing $N$ elements |
 | **`Merge()`** | $\mathcal{O}(N + M)$ | $\mathcal{O}(N + M)$ | $\mathcal{O}(\text{size}_1 + \text{size}_2)$ | Copies active elements ($\mathcal{O}(\text{length}_1 + \text{length}_2)$) into newly allocated buffer |
+| **`Max()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Linear scan from index `1` to `length - 1` comparing running max |
+| **`Min()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Linear scan from index `1` to `length - 1` comparing running min |
+| **`Sum()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Single linear accumulation loop over all $N = \text{length}$ elements |
+| **`Reverse()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(\text{size})$ | Copies elements in reverse order into a newly allocated buffer ($\mathcal{O}(1)$ if in-place) |
 
 ---
 
@@ -81,11 +85,37 @@ Comprehensive notes, conceptual audits, and detailed Big-$O$ complexity derivati
   * **Space Complexity**: $\mathcal{O}(\text{size}_1 + \text{size}_2)$ — allocates memory based on total capacities.
   * *(Simplified to $\mathcal{O}(N + M)$ when modeling general input sizes).*
 
+#### 🔹 `Max()`, `Min()`, and `Sum()`
+* **`Max()` & `Min()`**:
+  * Guard against empty arrays (`if (length == 0)`).
+  * Initialized to `items[0]` to correctly support arrays containing negative values.
+  * Loop runs from index `1` to `length - 1`, requiring exactly $N - 1$ comparisons: $\mathcal{O}(N)$ time, $\mathcal{O}(1)$ space.
+* **`Sum()`**:
+  * Accumulates all $N$ elements starting from `sum = 0`.
+  * $\mathcal{O}(N)$ time, $\mathcal{O}(1)$ auxiliary space.
+
+#### 🔹 `Reverse()` — Auxiliary vs. In-Place Approaches
+* **Auxiliary Buffer (Current Implementation)**:
+  * Allocates `newArr = new int[size]`, copies elements backwards via `newArr[i] = items[length - 1 - i]`, deletes old `items`, and reassigns `items = newArr`.
+  * **Time**: $\mathcal{O}(N)$
+  * **Auxiliary Space**: $\mathcal{O}(\text{size})$
+* **In-Place Two-Pointer Alternative ($\mathcal{O}(1)$ Space)**:
+  * Swaps elements symmetrically from outer boundaries inwards up to `i < length / 2`:
+  ```cpp
+  for (int i = 0; i < length / 2; i++) {
+      int temp = items[i];
+      items[i] = items[length - 1 - i];
+      items[length - 1 - i] = temp;
+  }
+  ```
+  * **Time**: $\mathcal{O}(N)$ ($N/2$ swaps)
+  * **Auxiliary Space**: $\mathcal{O}(1)$ (no heap allocations)
+
 ---
 
 ## 💡 Key Engineering Takeaways
 
 1. **Complexity depends on what grows**: Never assume an operation is $\mathcal{O}(N)$ just because it operates on an array; inspect the exact loop bounds and state variables controlling execution.
-2. **Auxiliary space measures new allocations**: Allocating a new buffer in `Merge` or `Enlarge` counts as $\mathcal{O}(\text{allocated capacity})$ auxiliary space, even if old buffers are deleted afterward.
+2. **Auxiliary space measures new allocations**: Allocating a new buffer in `Merge`, `Enlarge`, or `Reverse` counts as $\mathcal{O}(\text{allocated capacity})$ auxiliary space, even if old buffers are deleted afterward.
 3. **Pass large objects by `const&`**: Pass large objects by `const&` when the function only needs to read them and does not need to make a copy.
 4. **⚠️ Dynamic Memory Ownership (Rule of Three — Flagged for Later)**: Because `Array` owns raw heap memory (`int* items` with `delete[] items`), a default shallow copy constructor would produce dangling pointers and double-free errors. Passing by `const Array&` safely avoids unintended copies.
