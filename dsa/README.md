@@ -14,9 +14,17 @@ Every problem includes:
 
 ---
 
-## 📑 Problem Tracker
+## 📑 Implementations & Problem Tracker
 
-### 📊 1. Arrays & Hashing
+### 🧱 1. Data Structures Implementations
+
+| Data Structure | Operations / Highlights | Implementation | Documentation | Status |
+| :--- | :--- | :---: | :---: | :---: |
+| **Dynamic Array (Array ADT)** | `Fill`, `Display`, `Search`, `Append`, `Insert`, `Delete`, `Enlarge`, `Merge` | [Array.cpp](arrays/array/Array.cpp) | [README.md](arrays/array/README.md) | ✅ Complete |
+
+---
+
+### 📊 2. Arrays & Hashing Problems
 
 | # | Problem | Difficulty | Solution | Explanation & Notes | Time | Space | Status |
 | :-: | :--- | :-: | :-: | :-: | :-: | :-: | :-: |
