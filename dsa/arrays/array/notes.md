@@ -8,35 +8,41 @@ Comprehensive notes, conceptual audits, and detailed Big-$O$ complexity derivati
 
 | Operation | Best Case | Worst Case | Auxiliary Space | Key Reason |
 | :--- | :---: | :---: | :---: | :--- |
-| **`Fill()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Loops and processes $N$ elements (where $N = \text{number of elements filled}$) |
+| **`Fill()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Performs one iteration for each requested element ($N = \text{number of elements filled}$) |
 | **`Display()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Traverses all active elements ($N = \text{length}$) |
 | **`Search()`** | $\mathcal{O}(1)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Best case finds element at index `0`; worst case scans entire array |
 | **`Append()`** | $\mathcal{O}(1)$ | $\mathcal{O}(1)$ | $\mathcal{O}(1)$ | Direct write at `items[length]` without loops or resizing |
 | **`Insert()`** | $\mathcal{O}(1)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Best case inserts at end (`index = length`); worst case inserts at `0` (shifts $N$ elements) |
 | **`Delete()`** | $\mathcal{O}(1)$ | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Best case deletes last element (`index = length - 1`); worst case deletes `0` (shifts $N - 1$ elements) |
 | **`Enlarge()`** | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | $\mathcal{O}(\text{newSize})$ | Allocates a new heap array of `newSize` and copies existing $N$ elements |
-| **`Merge()`** | $\mathcal{O}(N + M)$ | $\mathcal{O}(N + M)$ | $\mathcal{O}(N + M)$ | Allocates a new array of capacity $(\text{size}_1 + \text{size}_2)$ and copies all elements |
+| **`Merge()`** | $\mathcal{O}(N + M)$ | $\mathcal{O}(N + M)$ | $\mathcal{O}(\text{size}_1 + \text{size}_2)$ | Copies active elements ($\mathcal{O}(\text{length}_1 + \text{length}_2)$) into newly allocated buffer |
 
 ---
 
 ## 🎯 Conceptual Deep Dive & Audit Q&A
 
-### 1. `length` vs. `size` (Capacity)
+### 1. `length` (Logical Elements) vs. `size` (Allocated Capacity)
 * **`size` (Capacity)**: Total physical memory slots allocated on the heap (`new int[arr_size]`).
 * **`length` (Logical Size)**: Number of valid, populated elements currently stored in the array.
-* **Key Principle**: `length` changes **only as elements are successfully added or removed**, never merely when an operation starts.
+* **Key Principle**: `length` represents how many elements are currently stored. It changes **only as elements are successfully added or removed**, never merely when an operation starts.
 
 ---
 
 ### 2. Primary Memory vs. Auxiliary Space
 * **Primary Memory (Input/State)**: Memory already belonging to the data structure or inputs.
 * **Auxiliary Space**: *Additional / temporary* memory allocated during the execution of an algorithm or method.
-* **Why `Merge()` is $\mathcal{O}(N + M)$ Auxiliary Space**:
-  Even though both arrays already have existing memory allocated, `Merge()` allocates `new int[newSize]`. This allocates a brand new memory block proportional to $(N + M)$ before releasing old memory.
+* **Why `Merge()` is $\mathcal{O}(\text{size}_1 + \text{size}_2)$ Auxiliary Space**:
+  Even though both arrays already possess allocated memory, `Merge()` allocates `new int[newSize]`. This allocates a brand new memory block proportional to the combined capacity before releasing old memory.
 
 ---
 
 ### 3. Detailed Operation Analysis
+
+#### 🔹 `Fill()` — What does $N$ represent?
+* The method asks the user for the number of items to populate and executes exactly that many iterations.
+* If $N$ elements are requested, it performs $N$ iterations.
+* **Time**: $\mathcal{O}(N)$ where $N = \text{number of filled elements}$.
+* **Space**: $\mathcal{O}(1)$ auxiliary space.
 
 #### 🔹 `Append()` — Why is it strictly $\mathcal{O}(1)$?
 * Look at the implementation:
@@ -48,7 +54,7 @@ Comprehensive notes, conceptual audits, and detailed Big-$O$ complexity derivati
       }
   }
   ```
-* It directly accesses `items[length]` by offset arithmetic and assigns the value. No elements are scanned or shifted.
+* It directly accesses `items[length]` by pointer arithmetic and assigns the value. No elements are scanned or shifted.
 * **Time**: $\mathcal{O}(1)$ best and worst.
 * **Space**: $\mathcal{O}(1)$ auxiliary space.
 
@@ -68,19 +74,18 @@ Comprehensive notes, conceptual audits, and detailed Big-$O$ complexity derivati
   * **Best Case $\mathcal{O}(1)$**: Deleting index `length - 1` requires 0 shifts (decrements `length--`).
   * **Worst Case $\mathcal{O}(N)$**: Deleting index `0` shifts all remaining $N - 1$ elements left.
 
-#### 🔹 `Enlarge(newSize)` & `Merge(other)`
-* **`Enlarge()`**: Allocates `new int[newSize]`, copies $N = \text{length}$ elements ($\mathcal{O}(N)$ time), frees old array with `delete[]`, and sets `items` pointer.
+#### 🔹 `Enlarge(newSize)` & `Merge(other)` — Capacity vs. Elements
+* **`Enlarge()`**: Allocates `new int[newSize]`, copies $N = \text{length}$ elements ($\mathcal{O}(N)$ time), frees old array with `delete[]`, and updates `items` pointer.
 * **`Merge()`**:
-  * Combines calling array ($N$ elements) with `other` ($M$ elements).
-  * Copies both into a new buffer of capacity $(\text{size}_1 + \text{size}_2)$.
-  * Time: $\mathcal{O}(N + M)$.
-  * Auxiliary Space: $\mathcal{O}(N + M)$ due to new heap allocation.
-  * **C++ Best Practice**: Passing `const Array& other` by reference avoids the copy constructor and prevents double-free crashes when destructors run on temporary copies.
+  * **Time Complexity**: $\mathcal{O}(\text{length}_1 + \text{length}_2)$ — only copies the actual valid elements.
+  * **Space Complexity**: $\mathcal{O}(\text{size}_1 + \text{size}_2)$ — allocates memory based on total capacities.
+  * *(Simplified to $\mathcal{O}(N + M)$ when modeling general input sizes).*
 
 ---
 
 ## 💡 Key Engineering Takeaways
 
-1. **Complexity depends on what grows**: Never assume an operation is $\mathcal{O}(N)$ just because it operates on an array; check whether a loop actually runs and what variable controls its upper bound.
-2. **Auxiliary space measures new allocations**: Allocating a new buffer in `Merge` or `Enlarge` counts as $\mathcal{O}(\text{allocated size})$ auxiliary space, even if old buffers are deleted afterward.
-3. **Safety first in dynamic memory**: Always pass objects by `const &` when copying is not needed, and pair every `new[]` with a `delete[]` in the destructor.
+1. **Complexity depends on what grows**: Never assume an operation is $\mathcal{O}(N)$ just because it operates on an array; inspect the exact loop bounds and state variables controlling execution.
+2. **Auxiliary space measures new allocations**: Allocating a new buffer in `Merge` or `Enlarge` counts as $\mathcal{O}(\text{allocated capacity})$ auxiliary space, even if old buffers are deleted afterward.
+3. **Pass large objects by `const&`**: Pass large objects by `const&` when the function only needs to read them and does not need to make a copy.
+4. **⚠️ Dynamic Memory Ownership (Rule of Three — Flagged for Later)**: Because `Array` owns raw heap memory (`int* items` with `delete[] items`), a default shallow copy constructor would produce dangling pointers and double-free errors. Passing by `const Array&` safely avoids unintended copies.
